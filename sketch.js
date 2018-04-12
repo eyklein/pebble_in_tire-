@@ -12,7 +12,7 @@ function setup() {
 
 function draw() {
   background(0);
-  traceGraphic.background(0,.6);
+  //traceGraphic.background(0,.6);
   wheel.update();
   wheel.display();
   if(isTranslating){
