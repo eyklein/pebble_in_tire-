@@ -81,7 +81,7 @@ function Wheel(_x,_y){
     push()
     traceGraphic.push();
     noFill()
-    stroke(200)
+    stroke(250)
     translate(this.pos.x,this.pos.y)
     traceGraphic.translate(this.pos.x,this.pos.y)
     rotate(this.rotation)
@@ -98,7 +98,7 @@ function Wheel(_x,_y){
     }
     pop()
     strokeWeight(3)
-    stroke(150)
+    stroke(200,200,250)
     ellipse(0,0,this.diam,this.diam)
     pop()
     //traceGraphic.point(0,0)
