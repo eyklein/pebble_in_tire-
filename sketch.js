@@ -1,6 +1,8 @@
 var wheel;
 var traceGraphic;
 var isTranslating=false;
+var showRim=true;
+
 function setup() {
   
   createCanvas(windowWidth,windowHeight);
@@ -40,11 +42,32 @@ function Wheel(_x,_y){
   this.pPos=createVector(_x,_y);;
   this.pos=createVector(_x,_y);
   this.diam=80;
+  this.showRimCheckBox=createCheckbox()
+  this.showRimCheckBox.checked(true)
+  this.showRimCheckBox.changed(function(){
+    
+    showRim=wheel.showRimCheckBox.checked()
+    //console.log(showRim)
+  })
+  this.sliderDiam = createSlider(5, 300, 80);
+  this.sliderDiam.changed(function(){
+    
+    wheel.diam=wheel.sliderDiam.value();
+  })
+  
+  
+  
   this.extentions=1
-  this.spokes=5;
+  this.spokes=2;
   this.rotation=0;
   // this.speed=createVector(1,0);
   this.rotationalSpeed=.01;
+  this.sliderRotation = createSlider(.005, .05, .01,.001);
+
+  this.sliderRotation.changed(function(){
+    
+    wheel.rotationalSpeed=wheel.sliderRotation.value();
+  })
   this.pTracerPos=createVector(this.pos.x-this.diam/2,this.pos.y);
   this.tracerPos=createVector(this.pos.x-this.diam/2,this.pos.y);
   this.tracerVel=createVector(0,0);
@@ -90,6 +113,29 @@ function Wheel(_x,_y){
     traceGraphic.stroke(255,0,0,50);
     traceGraphic.point(this.diam/(-2),0)
     //traceGraphic.ellipse(this.diam/(-2),0,5,5)
+    
+    
+    //translate to low point
+    var lowPoint=0;
+    for(var i=0;i<this.spokes*2;i++){
+      if(cos(PI/this.spokes*i+this.rotation)*this.diam/2 > lowPoint){
+        
+        lowPoint=cos(PI/this.spokes*i+this.rotation)*this.diam/2;
+      }
+      
+      //ellipse(cos(PI/this.spokes*i)*this.diam/2,sin(PI/this.spokes*i)*this.diam/2,5,5)
+    }
+    
+    //traceGraphic.translate(0,this.diam-lowPoint);
+    //console.log(this.diam/2-lowPoint)
+    // console.log(this.rotation)
+    // if(this.rotation%(2*PI)<PI/2||this.rotation%(2*PI)>3*PI/2){
+    //   translate(0,abs(this.diam/2-lowPoint));
+    // }else{
+    //   translate(0,-abs(this.diam/2-lowPoint));
+    // }
+    
+    
     push()
     
     for(var i=0;i<this.spokes;i++){
@@ -99,7 +145,9 @@ function Wheel(_x,_y){
     pop()
     strokeWeight(3)
     stroke(200,200,250)
-    ellipse(0,0,this.diam,this.diam)
+    if(showRim){
+      ellipse(0,0,this.diam,this.diam)
+    }
     pop()
     //traceGraphic.point(0,0)
     traceGraphic.pop()
